@@ -1,12 +1,15 @@
 const axios = require('axios');
 const catchAsync = require('../../utils/catchAsync');
 
+const isProd = process.env.NODE_ENV === 'production';
+
+const userUrlPath = isProd
+  ? process.env.PRODUCTION_APP_USER_API_URL_PRODUCTION
+  : process.env.LOCALHOST_USER_URL;
+
 const createUser = catchAsync(async (body) => {
   try {
-    const user = await axios.post(
-      `${process.env.LOCALHOST_USER_URL}/api/v1/users/`,
-      body
-    );
+    const user = await axios.post(`${userUrlPath}/api/v1/users/`, body);
 
     const userData = user && user.data.data;
 
